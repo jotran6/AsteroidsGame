@@ -1,13 +1,19 @@
 //your variable declarations here
 Spaceship spaceship = new Spaceship();
-Asteroid a = new Asteroid();
 Star [] Starfield = new Star[200];
+ArrayList<Asteroid> asteroids = new ArrayList<Asteroid>();
 public void setup() {
   //your code here
   size(1000, 1000);
   for (int i = 0; i < Starfield.length; i++) {
     Starfield[i] = new Star();
   }
+
+for (int i = 0; i < 10; i++) {
+     int x = (int) random(0, width);
+    int y = (int) random(0, height);
+    asteroids.add(new Asteroid(x, y));
+}
 }
 public void draw() {
   //your code here
@@ -17,8 +23,19 @@ public void draw() {
   }
   spaceship.move();
   spaceship.show();
+for (int i = 0; i < asteroids.size(); i++) {
+  Asteroid a = asteroids.get(i);
   a.show();
+  a.move();
+  float distance = dist(spaceship.getX(), spaceship.getY(), a.getX(), a.getY());
+  if (distance < 20) {
+    // collision detected, remove asteroid from game
+    asteroids.remove(i);
+  }
 }
+}
+
+
 public void keyPressed() {
   if (key == 'a') {
     spaceship.turn(-20);
@@ -37,35 +54,3 @@ public void keyPressed() {
     spaceship.hyperspace();
   }
 }
-
-
-class Asteroid extends Floater
-{
-  public double rotSpeed;
-  public Asteroid(){
-    corners = 6;
-    xCorners = new int[] {-11, 7, 13, 6, -11, -5};
-    yCorners = new int[] { -8, -8, 0, 10, 8, 0};
-    myColor = color(150);
-    myCenterX = Math.random()*400;
-    myCenterY = Math.random()*400;
-    myXspeed = 0;
-    myYspeed = 0;
-    myPointDirection = Math.random()*2*PI;
-    rotSpeed = 1;
-  }
-  public void move (){
-    turn(rotSpeed);
-    super.move();
-  }
-  public int getX (){
-    return (int)myCenterX;
-  }
-  public int getY (){
-    return (int)myCenterY;
-  }
-}
-
-
-
-
